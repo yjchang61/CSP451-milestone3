@@ -1,0 +1,52 @@
+name: CD Pipeline
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Login to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+      - name: Build and push Docker image
+        run: |
+          IMAGE_NAME="${{ secrets.ACR_LOGIN_SERVER }}/cloudmart"
+          COMMIT_SHA="${{ github.sha }}"
+          docker build -t "$IMAGE_NAME:latest" -t "$IMAGE_NAME:$COMMIT_SHA" .
+          docker push "$IMAGE_NAME:latest"
+          docker push "$IMAGE_NAME:$COMMIT_SHA"
+      - name: Delete old container if it exists
+        run: |
+          az container delete \
+            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
+            --name cloudmart-app \
+            --yes || true
+      - name: Deploy Azure Container Instance
+        run: |
+          IMAGE_NAME="${{ secrets.ACR_LOGIN_SERVER }}/cloudmart:latest"
+          az container create \
+            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
+            --name "cloudmart-app-${{ secrets.DNS_LABEL }}" \
+            --image "$IMAGE_NAME" \
+            --registry-login-server "${{ secrets.ACR_LOGIN_SERVER }}" \
+            --registry-username "${{ secrets.ACR_USERNAME }}" \
+            --registry-password "${{ secrets.ACR_PASSWORD }}" \
+            --dns-name-label "${{ secrets.DNS_LABEL }}" \
+            --ports 80 \
+            --os-type Linux \
+            --restart-policy OnFailure \
+            --ip-address public \
+            --environment-variables \
+              COSMOS_ENDPOINT="${{ secrets.COSMOS_ENDPOINT }}" \
+              COSMOS_KEY="${{ secrets.COSMOS_KEY }}"

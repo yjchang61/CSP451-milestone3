@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudMart — Your Cloud E-Commerce Store</title>
+    <meta name="description" content="CloudMart e-commerce platform powered by Azure — CSP451 Milestone 3">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-brand">
+            <span class="nav-logo">☁️</span>
+            <span class="nav-title">CloudMart</span>
+        </div>
+        <div class="nav-links">
+            <a href="#" class="nav-link active" onclick="showSection('shop')">Shop</a>
+            <a href="#" class="nav-link" onclick="showSection('cart')">
+                🛒 Cart <span class="cart-badge" id="cart-badge">0</span>
+            </a>
+            <a href="#" class="nav-link" onclick="showSection('orders')">📦 Orders</a>
+            <a href="/health" class="nav-link" target="_blank">❤️ Health</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero" id="hero">
+        <div class="hero-content">
+            <h1>Welcome to <span class="gradient-text">CloudMart</span></h1>
+            <p class="hero-subtitle">Enterprise cloud e-commerce — Powered by Azure Container Instances & Cosmos DB</p>
+            <p class="hero-meta">CSP451 Milestone 3 | FastAPI + Azure</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Shop Section -->
+        <section id="shop-section" class="section active">
+            <div class="section-header">
+                <h2>Product Catalog</h2>
+                <div class="category-filters" id="category-filters">
+                    <button class="filter-btn active" onclick="filterProducts('all')">All</button>
+                    <!-- Category buttons injected by JS -->
+                </div>
+            </div>
+            <div class="products-grid" id="products-grid">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Loading products...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cart Section -->
+        <section id="cart-section" class="section">
+            <div class="section-header">
+                <h2>Shopping Cart</h2>
+            </div>
+            <div id="cart-items" class="cart-items">
+                <p class="empty-message">Your cart is empty</p>
+            </div>
+            <div class="cart-summary" id="cart-summary" style="display:none;">
+                <div class="summary-row">
+                    <span>Total:</span>
+                    <span class="total-price" id="cart-total">$0.00</span>
+                </div>
+                <button class="btn btn-primary btn-lg" onclick="placeOrder()">
+                    🛍️ Place Order
+                </button>
+            </div>
+        </section>
+
+        <!-- Orders Section -->
+        <section id="orders-section" class="section">
+            <div class="section-header">
+                <h2>Order History</h2>
+            </div>
+            <div id="orders-list" class="orders-list">
+                <p class="empty-message">No orders yet</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>CloudMart &copy; 2026 — CSP451 Cloud Computing | Seneca College</p>
+        <p class="footer-tech">FastAPI • Azure Cosmos DB • Azure Container Instances • GitHub Actions</p>
+    </footer>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
