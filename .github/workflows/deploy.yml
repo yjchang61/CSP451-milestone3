@@ -26,46 +26,6 @@ jobs:
           docker push "$IMAGE_NAME:latest"
           docker push "$IMAGE_NAME:$COMMIT_SHA"
 
-      - name: Azure login (only if service principal is available)
-        if: ${{ secrets.AZURE_CREDENTIALS != '' }}
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Delete old container if it exists
-        if: ${{ secrets.AZURE_CREDENTIALS != '' }}
-        run: |
-          az container delete \
-            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
-            --name cloudmart-app \
-            --yes || true
-
-      - name: Deploy Azure Container Instance
-        if: ${{ secrets.AZURE_CREDENTIALS != '' }}
-        run: |
-          az container create \
-            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
-            --name cloudmart-app \
-            --image "${{ secrets.ACR_LOGIN_SERVER }}/cloudmart:latest" \
-            --cpu 1 \
-            --memory 1.5 \
-            --registry-login-server "${{ secrets.ACR_LOGIN_SERVER }}" \
-            --registry-username "${{ secrets.ACR_USERNAME }}" \
-            --registry-password "${{ secrets.ACR_PASSWORD }}" \
-            --dns-name-label "${{ secrets.DNS_LABEL }}" \
-            --ports 80 \
-            --os-type Linux \
-            --ip-address Public \
-            --environment-variables \
-              COSMOS_ENDPOINT="${{ secrets.COSMOS_ENDPOINT }}" \
-              COSMOS_KEY="${{ secrets.COSMOS_KEY }}" \
-            --restart-policy OnFailure \
-            --location canadaeast
-
       - name: Manual deploy notice
-        if: ${{ secrets.AZURE_CREDENTIALS == '' }}
         run: |
-          echo "AZURE_CREDENTIALS is not configured."
-          echo "CD pipeline completed ACR push only."
-          echo "Automatic ACI deployment was skipped."
-          echo "This is expected in Seneca lab environments where service principal creation is blocked."
+          echo "ACI auto-deploy skipped (no service principal permissions in lab environment)"
