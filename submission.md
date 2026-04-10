@@ -23,7 +23,7 @@ Student-RG-2036928  canadaeast    Succeeded
 
 **Screenshot:** Resource group overview showing ACI + Cosmos DB + ACR
 
-![Resource group overview](cloudmart-starter/Screenshots/azure-resource-group-overview.png)
+![Resource group overview](screenshots/azure-resource-group-overview.png)
 
 ---
 
@@ -35,11 +35,11 @@ az cosmosdb show --name cloudmart-db-2036928 --resource-group Student-RG-2036928
 
 **Screenshots:** Data Explorer with products, cart, and orders containers
 
-![Cosmos DB products container](cloudmart-starter/Screenshots/cosmos-products-data.png)
+![Cosmos DB products container](screenshots/cosmos-products-data.png)
 
-![Cosmos DB cart container](cloudmart-starter/Screenshots/cosmos-cart-data.png)
+![Cosmos DB cart container](screenshots/cosmos-cart-data.png)
 
-![Cosmos DB orders container](cloudmart-starter/Screenshots/cosmos-orders-data.png)
+![Cosmos DB orders container](screenshots/cosmos-orders-data.png)
 
 ---
 
@@ -100,7 +100,7 @@ docker run -p 8080:80 -e COSMOS_ENDPOINT="..." -e COSMOS_KEY="..." cloudmart-api
 **Screenshot:** docker build output
 **Screenshot:** App running locally at http://localhost:8080
 
-![Docker local test](cloudmart-starter/Screenshots/docker-local-api-test.png)
+![Docker local test](screenshots/docker-local-api-test.png)
 
 ---
 
@@ -112,15 +112,15 @@ az container show --resource-group Student-RG-2036928 --name cloudmart-app -o ta
 
 **Screenshots:** ACI details (running, IP, FQDN), live endpoint, homepage, and container logs
 
-![ACI running](cloudmart-starter/Screenshots/azure-aci-running.png)
+![ACI running](screenshots/azure-aci-running.png)
 
-![Homepage](cloudmart-starter/Screenshots/cloudmart-homepage.png)
+![Homepage](screenshots/cloudmart-homepage.png)
 
-![Live endpoint curl](cloudmart-starter/Screenshots/azure-curl-public-endpoint.png)
+![Live endpoint curl](screenshots/azure-curl-public-endpoint.png)
 
 The application is accessible via the public FQDN and fully functional in a browser.
 
-![Container logs](cloudmart-starter/Screenshots/azure-container-logs.png)
+![Container logs](screenshots/azure-container-logs.png)
 
 ---
 
@@ -130,13 +130,13 @@ The application is accessible via the public FQDN and fully functional in a brow
 **Screenshot:** GitHub Actions CI + CD passing
 **Screenshot:** ACR repository with image tags
 
-![GitHub Repo](cloudmart-starter/Screenshots/github-repo-overview.png)
+![GitHub Repo](screenshots/github-repo-overview.png)
 
-![GitHub Secrets](cloudmart-starter/Screenshots/github-secrets.png)
+![GitHub Secrets](screenshots/github-secrets.png)
 
-![GitHub Actions success](cloudmart-starter/Screenshots/github-actions-success.png)
+![GitHub Actions success](screenshots/github-actions-success.png)
 
-![ACR repository](cloudmart-starter/Screenshots/acr-repository.png)
+![ACR repository](screenshots/acr-repository.png)
 
 ---
 
@@ -198,15 +198,15 @@ curl $BASE_URL/api/v1/cart | python3 -m json.tool
 
 ### 5 Browser Screenshots:
 1. Homepage — full product catalog
-   ![Homepage](cloudmart-starter/Screenshots/cloudmart-product-catalog.png)
+   ![Homepage](screenshots/cloudmart-product-catalog.png)
 2. Category filter — filtered products
-   ![Category filter](cloudmart-starter/Screenshots/cloudmart-category-filter.png)
+   ![Category filter](screenshots/cloudmart-category-filter.png)
 3. Cart — items with total price
-   ![Cart](cloudmart-starter/Screenshots/cloudmart-cart.png)
+   ![Cart](screenshots/cloudmart-cart.png)
 4. Order confirmation — successful placement
-   ![Orders](cloudmart-starter/Screenshots/cloudmart-orders.png)
+   ![Orders](screenshots/cloudmart-orders.png)
 5. /health endpoint — JSON response
-   ![Health endpoint](cloudmart-starter/Screenshots/azure-health-endpoint.png)
+   ![Health endpoint](screenshots/azure-health-endpoint.png)
 
 ---
 
