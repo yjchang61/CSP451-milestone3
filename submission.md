@@ -23,7 +23,7 @@ Student-RG-2036928  canadaeast    Succeeded
 
 **Screenshot:** Resource group overview showing ACI + Cosmos DB + ACR
 
-![Resource group overview](Screenshots/azure-resource-group-overview.png)
+![Resource group overview](cloudmart-starter/Screenshots/azure-resource-group-overview.png)
 
 ---
 
@@ -35,11 +35,11 @@ az cosmosdb show --name cloudmart-db-2036928 --resource-group Student-RG-2036928
 
 **Screenshots:** Data Explorer with products, cart, and orders containers
 
-![Cosmos DB products container](Screenshots/cosmos-products-data.png)
+![Cosmos DB products container](cloudmart-starter/Screenshots/cosmos-products-data.png)
 
-![Cosmos DB cart container](Screenshots/cosmos-cart-data.png)
+![Cosmos DB cart container](cloudmart-starter/Screenshots/cosmos-cart-data.png)
 
-![Cosmos DB orders container](Screenshots/cosmos-orders-data.png)
+![Cosmos DB orders container](cloudmart-starter/Screenshots/cosmos-orders-data.png)
 
 ---
 
@@ -58,9 +58,8 @@ curl http://localhost:8000/api/v1/categories | python3 -m json.tool
 **Output:**
 ```
 {
-  "status": "ok",
-  "message": "CloudMart API is healthy",
-  "timestamp": "2026-04-09T18:00:00.000000+00:00"
+  "status": "healthy",
+  "database": "connected"
 }
 ```
 
@@ -101,7 +100,7 @@ docker run -p 8080:80 -e COSMOS_ENDPOINT="..." -e COSMOS_KEY="..." cloudmart-api
 **Screenshot:** docker build output
 **Screenshot:** App running locally at http://localhost:8080
 
-![Docker local test](Screenshots/docker-local-api-test.png)
+![Docker local test](cloudmart-starter/Screenshots/docker-local-api-test.png)
 
 ---
 
@@ -113,13 +112,15 @@ az container show --resource-group Student-RG-2036928 --name cloudmart-app -o ta
 
 **Screenshots:** ACI details (running, IP, FQDN), live endpoint, homepage, and container logs
 
-![ACI running](Screenshots/azure-aci-running.png)
+![ACI running](cloudmart-starter/Screenshots/azure-aci-running.png)
 
-![CloudMart homepage live](Screenshots/cloudmart-homepage.png)
+![Homepage](cloudmart-starter/Screenshots/cloudmart-homepage.png)
 
-![Live endpoint curl](Screenshots/azure-curl-public-endpoint.png)
+![Live endpoint curl](cloudmart-starter/Screenshots/azure-curl-public-endpoint.png)
 
-![Container logs](Screenshots/azure-container-logs.png)
+The application is accessible via the public FQDN and fully functional in a browser.
+
+![Container logs](cloudmart-starter/Screenshots/azure-container-logs.png)
 
 ---
 
@@ -129,90 +130,25 @@ az container show --resource-group Student-RG-2036928 --name cloudmart-app -o ta
 **Screenshot:** GitHub Actions CI + CD passing
 **Screenshot:** ACR repository with image tags
 
-![GitHub Secrets](Screenshots/github-secrets.png)
+![GitHub Repo](cloudmart-starter/Screenshots/github-repo-overview.png)
 
-![GitHub Actions success](Screenshots/github-actions-success.png)
+![GitHub Secrets](cloudmart-starter/Screenshots/github-secrets.png)
 
-![ACR repository](Screenshots/acr-repository.png)
+![GitHub Actions success](cloudmart-starter/Screenshots/github-actions-success.png)
+
+![ACR repository](cloudmart-starter/Screenshots/acr-repository.png)
 
 ---
 
 ## 7. End-to-End Testing
 
-### Example curl test commands:
-
-```bash
-BASE_URL="http://cloudmart-2036928.canadaeast.azurecontainer.io"
-
-# Test 1: Homepage
-curl -s -o /dev/null -w "%{http_code}" $BASE_URL/
-
-# Test 2: Health
-curl $BASE_URL/health | python3 -m json.tool
-
-# Test 3: Products
-curl $BASE_URL/api/v1/products | python3 -m json.tool
-
-# Test 4: Single product
-curl $BASE_URL/api/v1/products/prod-001 | python3 -m json.tool
-
-# Test 5: Categories
-curl $BASE_URL/api/v1/categories | python3 -m json.tool
-
-# Test 6: Filter by category
-curl "$BASE_URL/api/v1/products?category=Electronics" | python3 -m json.tool
-
-# Test 7: Add to cart
-curl -X POST $BASE_URL/api/v1/cart/items \
-  -H "Content-Type: application/json" \
-  -d '{"product_id":"prod-001","quantity":2}' | python3 -m json.tool
-
-# Test 8: View cart
-curl $BASE_URL/api/v1/cart | python3 -m json.tool
-```
-
-**Output:**
-```
-200
-{
-  "status": "ok",
-  "message": "CloudMart API is healthy",
-  "timestamp": "2026-04-09T18:00:00.000000+00:00"
-}
-```
-
-```
-[
-  { "id": "prod-001", "name": "Wireless Headphones", "price": 99.99 },
-  { "id": "prod-002", "name": "Smart Watch", "price": 149.99 }
-]
-```
-
-```
-{
-  "id": "prod-001",
-  "name": "Wireless Headphones",
-  "category": "Electronics",
-  "price": 99.99
-}
-```
-
-```
-[
-  "Electronics",
-  "Home",
-  "Sports"
-]
-```
-
-```
-{
-  "cart_items": [
-    { "product_id": "prod-001", "quantity": 2, "subtotal": 199.98 }
-  ],
-  "total": 199.98
-}
-```
+All endpoints tested successfully:
+- Homepage: 200 OK
+- Health: healthy
+- Products: returned JSON list
+- Categories: returned JSON list
+- Cart: working
+- Orders: successfully created and retrieved
 
 ---
 
@@ -221,6 +157,8 @@ curl $BASE_URL/api/v1/cart | python3 -m json.tool
 - CI pipeline: `.github/workflows/ci.yml`
 - CD pipeline: `.github/workflows/deploy.yml`
 - Secrets required: `ACR_NAME`, `ACR_LOGIN_SERVER`, `ACR_USERNAME`, `ACR_PASSWORD`, `COSMOS_ENDPOINT`, `COSMOS_KEY`, `AZURE_RESOURCE_GROUP`, `DNS_LABEL`, `AZURE_CREDENTIALS`
+
+### Additional Tests:
 
 ```bash
 # Test 9: Place order
@@ -260,15 +198,15 @@ curl $BASE_URL/api/v1/cart | python3 -m json.tool
 
 ### 5 Browser Screenshots:
 1. Homepage — full product catalog
-   ![Homepage](Screenshots/cloudmart-product-catalog.png)
+   ![Homepage](cloudmart-starter/Screenshots/cloudmart-product-catalog.png)
 2. Category filter — filtered products
-   ![Category filter](Screenshots/cloudmart-category-filter.png)
+   ![Category filter](cloudmart-starter/Screenshots/cloudmart-category-filter.png)
 3. Cart — items with total price
-   ![Cart](Screenshots/cloudmart-cart.png)
+   ![Cart](cloudmart-starter/Screenshots/cloudmart-cart.png)
 4. Order confirmation — successful placement
-   ![Orders](Screenshots/cloudmart-orders.png)
+   ![Orders](cloudmart-starter/Screenshots/cloudmart-orders.png)
 5. /health endpoint — JSON response
-   ![Health endpoint](Screenshots/azure-health-endpoint.png)
+   ![Health endpoint](cloudmart-starter/Screenshots/azure-health-endpoint.png)
 
 ---
 
@@ -282,3 +220,5 @@ Monitoring can be implemented using Azure Monitor to collect container logs and 
 
 ### Q3: Scaling
 If CloudMart needed to support 10,000 concurrent users, I would migrate from Azure Container Instances to Azure Kubernetes Service (AKS). This would allow horizontal scaling, load balancing, and better resource management. I would also introduce caching (e.g., Redis) to reduce database load and improve performance.
+
+This implementation demonstrates a fully automated DevOps workflow from development to deployment, integrating cloud infrastructure, CI/CD pipelines, and database persistence.
