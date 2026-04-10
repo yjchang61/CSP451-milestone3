@@ -82,9 +82,9 @@ curl http://localhost:8000/api/v1/categories | python3 -m json.tool
 
 ```
 [
-  "Books",
+  "Electronics",
   "Clothing",
-  "Electronics"
+  "Books"
 ]
 ```
 
@@ -142,13 +142,12 @@ The application is accessible via the public FQDN and fully functional in a brow
 
 ## 7. End-to-End Testing
 
-All endpoints tested successfully:
-- Homepage: 200 OK
-- Health: healthy
-- Products: returned JSON list
-- Categories: returned JSON list
-- Cart: returned current cart items
-- Orders: successfully created and retrieved
+200 OK responses confirmed for all endpoints:
+- /health → status: healthy
+- /products → returned product list
+- /categories → returned categories
+- /cart → working correctly
+- /orders → successfully created and retrieved
 
 ---
 
@@ -245,3 +244,5 @@ Monitoring can be implemented using Azure Monitor to collect container logs and 
 If CloudMart needed to support 10,000 concurrent users, I would migrate from Azure Container Instances to Azure Kubernetes Service (AKS). This would allow horizontal scaling, load balancing, and better resource management. I would also introduce caching (e.g., Redis) to reduce database load and improve performance.
 
 This implementation demonstrates a fully automated DevOps workflow from development to deployment, integrating cloud infrastructure, CI/CD pipelines, and database persistence.
+
+This project demonstrates a complete DevOps pipeline integrating development, deployment, and cloud infrastructure automation.
