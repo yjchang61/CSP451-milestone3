@@ -66,15 +66,15 @@ curl http://localhost:8000/api/v1/categories | python3 -m json.tool
 ```
 [
   {
-    "id": "prod-001",
-    "name": "Wireless Headphones",
-    "price": 99.99,
+    "id": "1",
+    "name": "Wireless Bluetooth Headphones",
+    "price": 79.99,
     "category": "Electronics"
   },
   {
-    "id": "prod-002",
-    "name": "Smart Watch",
-    "price": 149.99,
+    "id": "2",
+    "name": "USB-C Fast Charging Cable (3-Pack)",
+    "price": 19.99,
     "category": "Electronics"
   }
 ]
@@ -82,9 +82,9 @@ curl http://localhost:8000/api/v1/categories | python3 -m json.tool
 
 ```
 [
-  "Electronics",
-  "Home",
-  "Sports"
+  "Books",
+  "Clothing",
+  "Electronics"
 ]
 ```
 
@@ -147,7 +147,7 @@ All endpoints tested successfully:
 - Health: healthy
 - Products: returned JSON list
 - Categories: returned JSON list
-- Cart: working
+- Cart: returned current cart items
 - Orders: successfully created and retrieved
 
 ---
@@ -156,7 +156,7 @@ All endpoints tested successfully:
 
 - CI pipeline: `.github/workflows/ci.yml`
 - CD pipeline: `.github/workflows/deploy.yml`
-- Secrets required: `ACR_NAME`, `ACR_LOGIN_SERVER`, `ACR_USERNAME`, `ACR_PASSWORD`, `COSMOS_ENDPOINT`, `COSMOS_KEY`, `AZURE_RESOURCE_GROUP`, `DNS_LABEL`, `AZURE_CREDENTIALS`
+- Secrets required: `ACR_LOGIN_SERVER`, `ACR_USERNAME`, `ACR_PASSWORD`, `COSMOS_ENDPOINT`, `COSMOS_KEY`
 
 ### Additional Tests:
 
@@ -173,27 +173,50 @@ curl $BASE_URL/api/v1/cart | python3 -m json.tool
 
 **Output:**
 ```
-{"status":"success","order_id":"order-001","total":199.98}
+{
+  "message": "Order placed successfully",
+  "order": {
+    "id": "<order-uuid>",
+    "user_id": "demo-user",
+    "items": [
+      {
+        "product_id": "1",
+        "product_name": "Wireless Bluetooth Headphones",
+        "price": 79.99,
+        "quantity": 2,
+        "subtotal": 159.98
+      }
+    ],
+    "total": 159.98,
+    "status": "confirmed",
+    "created_at": "2026-04-09T12:34:56.789123+00:00"
+  }
+}
 ```
 
 ```
 [
   {
-    "order_id": "order-001",
-    "status": "completed",
-    "total": 199.98,
+    "id": "<order-uuid>",
+    "user_id": "demo-user",
     "items": [
-      {"product_id":"prod-001","quantity":2}
-    ]
+      {
+        "product_id": "1",
+        "product_name": "Wireless Bluetooth Headphones",
+        "price": 79.99,
+        "quantity": 2,
+        "subtotal": 159.98
+      }
+    ],
+    "total": 159.98,
+    "status": "confirmed",
+    "created_at": "2026-04-09T12:34:56.789123+00:00"
   }
 ]
 ```
 
 ```
-{
-  "cart_items": [],
-  "total": 0.00
-}
+[]
 ```
 
 ### 5 Browser Screenshots:
